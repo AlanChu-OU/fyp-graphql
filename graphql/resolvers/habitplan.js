@@ -12,5 +12,12 @@ module.exports = {
         } catch (err) {
             throw err;
         }
+    },
+    createHabit: async () => {
+        try{
+            
+        }catch(err){
+            throw err;
+        }
     }
 };

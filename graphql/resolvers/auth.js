@@ -11,12 +11,13 @@ module.exports = {
                 throw new Error('User exists already');
             }
 
-            const hasdedPassword = await bcrypt.hash(args.userInput.password);
+            const hasdedPassword = await bcrypt.hash(args.userInput.password, 12);
             const newUser = new User({
                 email: args.userInput.email,
                 password: hasdedPassword,
                 userName: args.userInput.userName
             });
+
             const result = await newUser.save();
             return {
                 ...result._doc,
@@ -37,7 +38,9 @@ module.exports = {
         if(!isEqual) {
             throw new Error('Password is incorrect');
         }
-        const token = jwt.sign({userId: user.id, email: user.email}, 'secretKey');
+        const token = jwt.sign({userId: user.id, email: user.email}, 'secretKey', {
+            expiresIn: "100 days"
+        });
         return {userId: user.id, token: token };
     }
 };
