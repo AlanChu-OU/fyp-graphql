@@ -8,15 +8,16 @@ type User {
     userName: String!
     height: Float
     weight: Float
-    createdHabits: [HabbitPlan!]
+    createdHabits: [HabitPlan!]
 }
 
-type HabbitPlan {
+type HabitPlan {
     _id: ID!
     habitName: String!
     habitType: String!
     startDate: String!
     endDate: String
+    creator: User!
 }
 
 input UserInput {
@@ -25,8 +26,17 @@ input UserInput {
     userName: String!
 }
 
+input PlanInput {
+    habitName: String!
+    habitType: String!
+    startDate: String!
+    endDate: String
+    creator: ID!
+}
+
 type AuthData {
-    token: String
+    userId: ID!
+    token: String!
 }
 
 type RootQuery {
@@ -35,6 +45,7 @@ type RootQuery {
 
 type RootMutation {
     createUser(userInput: UserInput): User
+    createHabitPlan(planInput: PlanInput): HabitPlan
 }
 
 schema {
