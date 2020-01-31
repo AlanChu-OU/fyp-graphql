@@ -21,7 +21,7 @@ const userSchema = new Schema({
     weight: {
         type: Number
     },
-    createdHabbits: [
+    createdHabits: [
         {
             type: Schema.Types.ObjectId,
             ref: 'HabitPlan'

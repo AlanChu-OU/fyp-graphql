@@ -8,7 +8,7 @@ const user = async userId => {
         return {
             ...user._doc,
             _id: user.id,
-            createdHabits: habitplans.bind(this, user._doc.createdHabits);
+            createdHabits: habitplans.bind(this, user._doc.createdHabits)
         }
     }catch(err){
         throw err;
@@ -27,6 +27,7 @@ const habitplans = async (planIds) => {
 };
 
 const transformHabitPlan = habitplan => {
+    //console.log(habitplan._doc.creator);
     return {
         ...habitplan._doc,
         _id: habitplan.id,

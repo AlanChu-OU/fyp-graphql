@@ -13,24 +13,25 @@ module.exports = {
             throw err;
         }
     },
-    createHabit: async (args) => {
+    createHabitPlan: async (args) => {
         const habitplan = new HabitPlan({
-            habitName: args.userInput.habitName,
-            habitType: args.userInput.habitType,
-            startDate: new Date(args.userInput.startDate),
-            endDate: ((args.userInput.endDate)? new Date(args.userInput.endDate) : null),
-            creator: args.userInput.creator
+            habitName: args.planInput.habitName,
+            habitType: args.planInput.habitType,
+            startDate: new Date(args.planInput.startDate),
+            endDate: ((args.planInput.endDate)? new Date(args.planInput.endDate) : null),
+            creator: args.planInput.creator
         });
         let createdHabitPlan;
         try{
             const result =  await habitplan.save();
+            console.log(result);
             createdHabitPlan = transformHabitPlan(result);
-            const creator = await User.findById(args.userInput.creator);
+            const creator = await User.findById(args.planInput.creator);
 
             if(!creator){
                 throw new Error('User does not exist');
             }
-            creator.createdHabitPlan.push(habitplan);
+            creator.createdHabits.push(habitplan);
             await creator.save();
 
             return createdHabitPlan;

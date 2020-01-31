@@ -25,8 +25,7 @@ module.exports = {
                 _id: result.id
             }
         } catch (err) {
-            //throw err;
-            throw Error('Position 1');
+            throw err;
         }
     },
     login: async ({email, password}) => {

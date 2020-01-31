@@ -1,7 +1,9 @@
 const authResolver = require('./auth');
+const habitplanResolver = require('./habitplan');
 
 const rootResolver = {
-    ...authResolver
+    ...authResolver,
+    ...habitplanResolver
 };
 
 module.exports = rootResolver;
