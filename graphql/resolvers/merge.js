@@ -16,7 +16,6 @@ const user = async userId => {
         throw err;
     }
 };
-//exports.user = user;
 
 const habitplans = async (planIds) => {
     try{
