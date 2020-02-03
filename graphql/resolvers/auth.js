@@ -15,7 +15,10 @@ module.exports = {
             const newUser = new User({
                 email: args.userInput.email,
                 password: hasdedPassword,
-                userName: args.userInput.userName
+                userName: args.userInput.userName,
+                height: null,
+                weight: null,
+                createdHabits: []
             });
 
             const result = await newUser.save();

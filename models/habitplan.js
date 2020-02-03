@@ -22,7 +22,13 @@ const habitplanSchema = new Schema({
     creator: {
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }
+    },
+    createdItems: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'PlanItem'
+        }
+    ]
 });
 
 module.exports = mongoose.model('HabitPlan', habitplanSchema);

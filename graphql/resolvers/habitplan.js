@@ -3,7 +3,7 @@ const User = require('../../models/user');
 const { transformHabitPlan } = require('./merge');
 
 module.exports = {
-    HabitPaln: async () => {
+    HabitPlan: async () => {
         try{
             const habitplans = await HabitPlan.find();
             return habitplans.map(habitplan => {
@@ -19,18 +19,19 @@ module.exports = {
             habitType: args.planInput.habitType,
             startDate: new Date(args.planInput.startDate),
             endDate: ((args.planInput.endDate)? new Date(args.planInput.endDate) : null),
-            creator: args.planInput.creator
+            creator: args.planInput.creator,
+            createdItems: []
         });
         let createdHabitPlan;
         try{
-            const result =  await habitplan.save();
-            console.log(result);
-            createdHabitPlan = transformHabitPlan(result);
             const creator = await User.findById(args.planInput.creator);
-
             if(!creator){
                 throw new Error('User does not exist');
             }
+
+            const result =  await habitplan.save();
+            createdHabitPlan = transformHabitPlan(result);
+
             creator.createdHabits.push(habitplan);
             await creator.save();
 
