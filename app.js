@@ -33,7 +33,7 @@ app.use(
 
 mongoose.connect(`mongodb+srv://sharebits:sharebits@cluster0-ebi7i.mongodb.net/sharebitsdb?retryWrites=true&w=majority`
 ).then(() => {
-    app.listen(process.env.PORT);
+    app.listen(process.env.PORT); //|| 8099
 }).catch(err => {
     console.log(err);
 });

@@ -10,6 +10,7 @@ const user = async userId => {
         return {
             ...user._doc,
             _id: user.id,
+            password: null, //will not return the password
             createdHabits: habitplans.bind(this, user._doc.createdHabits)
         }
     }catch(err){

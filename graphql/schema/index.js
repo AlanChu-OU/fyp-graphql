@@ -8,6 +8,8 @@ type User {
     userName: String!
     height: Float
     weight: Float
+    gender: String
+    sessionToken: String
     createdHabits: [HabitPlan!]
 }
 
@@ -42,6 +44,9 @@ input UserInput {
     email: String!
     password: String!
     userName: String!
+    height: Float
+    weight: Float
+    gender: String
 }
 
 input PlanInput {

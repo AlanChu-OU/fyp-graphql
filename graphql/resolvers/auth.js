@@ -16,8 +16,10 @@ module.exports = {
                 email: args.userInput.email,
                 password: hasdedPassword,
                 userName: args.userInput.userName,
-                height: null,
-                weight: null,
+                height: ((args.userInput.height)?args.userInput.height:null),
+                weight: ((args.userInput.weight)?args.userInput.weight:null),
+                gender: ((args.userInput.gender)?args.userInput.gender:null),
+                sessionToken: null,
                 createdHabits: []
             });
 
@@ -40,9 +42,7 @@ module.exports = {
         if(!isEqual) {
             throw new Error('Password is incorrect');
         }
-        const token = jwt.sign({userId: user.id, email: user.email}, 'secretKey', {
-            expiresIn: "100 days"
-        });
+        const token = jwt.sign({userId: user.id, email: user.email}, 'secretKey', {  });//expiresIn: "100 days"
         return {userId: user.id, token: token };
     }
 };
