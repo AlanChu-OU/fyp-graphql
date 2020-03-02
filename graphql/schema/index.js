@@ -19,7 +19,9 @@ type HabitPlan {
     habitType: String!
     startDate: String!
     endDate: String
+    isPublished: Boolean!
     creator: User!
+    isActive: Boolean!
     createdItems: [PlanItem!]
 }
 
@@ -28,7 +30,7 @@ type PlanItem {
     habitPlan: HabitPlan!
     itemName: String!
     itemType: String!
-    itemGoal: Float!
+    itemGoal: Float
     createdRecords: [PlanRecord!]
 }
 

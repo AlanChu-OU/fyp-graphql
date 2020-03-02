@@ -19,7 +19,9 @@ module.exports = {
             habitType: args.planInput.habitType,
             startDate: new Date(args.planInput.startDate),
             endDate: ((args.planInput.endDate)? new Date(args.planInput.endDate) : null),
+            isPublished: false, //default false
             creator: args.planInput.creator,
+            isActive: false,    //default false
             createdItems: []
         });
         let createdHabitPlan;
