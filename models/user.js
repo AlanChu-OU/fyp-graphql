@@ -16,10 +16,20 @@ const userSchema = new Schema({
         required: true
     },
     height: {
-        type: Number
+        type: Number,
+        
     },
     weight: {
-        type: Number
+        type: Number,
+
+    },
+    gender: {
+        type: String,
+
+    },
+    sessionToken: {
+        type: String,
+
     },
     createdHabits: [
         {

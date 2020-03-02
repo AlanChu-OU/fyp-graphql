@@ -19,9 +19,16 @@ const habitplanSchema = new Schema({
         type: Date,
         required: false
     },
+    isPublished: {
+        type: Boolean,
+        required: true
+    },
     creator: {
         type: Schema.Types.ObjectId,
         ref: 'User'
+    },
+    isActive: {
+        type: Boolean
     },
     createdItems: [
         {
