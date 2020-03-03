@@ -34,15 +34,45 @@ module.exports = {
         }
     },
     login: async ({email, password}) => {
-        const user = await User.findOne({email: email});
-        if(!user){
-            throw new Error('User does not exist');
+        try{
+            const user = await User.findOne({email: email});
+            if(!user){
+                throw new Error('User does not exist');
+            }
+            const isEqual = await bcrypt.compare(password, user.password);
+            if(!isEqual) {
+                throw new Error('Password is incorrect');
+            }
+            const token = jwt.sign({userId: user.id, email: user.email}, 'secretKey', {  });//expiresIn: "100 days"
+            user.sessionToken = token;
+            const result = await user.save();
+            return {userId: user.id, token: token };
+        }catch(err){
+            return err;
         }
-        const isEqual = await bcrypt.compare(password, user.password);
-        if(!isEqual) {
-            throw new Error('Password is incorrect');
+    },
+    logout: async (args) => {
+        try{
+            const user = await User.findById(args.userId);
+            if(!user){
+                throw new Error("User does not exist");
+            }
+            const decodedToken = await jwt.verify(args.token, "secretKey");
+            if(!decodedToken){
+                throw new Error('Token decode error');
+            }
+            if(decodedToken.userId != args.userId){
+                throw new Error('Wrong token or user');
+            }
+            user.sessionToken = null;
+            const result = await user.save();
+            return {userId: result.id, token: "" };
+        }catch(err){
+            if(err.name == "CastError")
+                return new Error("Invalid user id");
+            if(err.name == "JsonWebTokenError")
+                return new Error("Invalid token");
+            return err;
         }
-        const token = jwt.sign({userId: user.id, email: user.email}, 'secretKey', {  });//expiresIn: "100 days"
-        return {userId: user.id, token: token };
     }
 };
