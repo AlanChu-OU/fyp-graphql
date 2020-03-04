@@ -28,6 +28,7 @@ const habitplans = async (planIds) => {
         throw err;
     }
 };
+exports.habitplans = habitplans;
 
 const singlehabitplan = async (planId) => {
     try{

@@ -66,7 +66,7 @@ module.exports = {
             }
             user.sessionToken = null;
             const result = await user.save();
-            return {userId: result.id, token: "" };
+            return { msg: "succ" };
         }catch(err){
             if(err.name == "CastError")
                 return new Error("Invalid user id");

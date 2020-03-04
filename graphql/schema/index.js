@@ -78,10 +78,15 @@ type AuthData {
     token: String!
 }
 
+type Message {
+    msg: String!
+}
+
 type RootQuery {
     HabitPlan: [HabitPlan!]
     login(email: String!, password: String!): AuthData!
-    logout(userId: ID!, token: String!): AuthData!
+    logout(userId: ID!, token: String!): Message!
+    pullAllPlans(userId: ID!): [HabitPlan!]
 }
 
 type RootMutation {
