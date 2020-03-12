@@ -41,5 +41,11 @@ module.exports = {
         }catch(err){
             throw err;
         }
+    },
+    test: async (args, req) => {
+        if(req.isAuth)
+            return req.get('Authorization');
+        else
+            return "fail";
     }
 };

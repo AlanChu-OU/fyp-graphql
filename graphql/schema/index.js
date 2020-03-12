@@ -83,6 +83,7 @@ type Message {
 }
 
 type RootQuery {
+    test: String
     HabitPlan: [HabitPlan!]
     login(email: String!, password: String!): AuthData!
     logout(userId: ID!, token: String!): Message!
