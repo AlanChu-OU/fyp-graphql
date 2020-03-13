@@ -87,7 +87,7 @@ type RootQuery {
     habitPlan: [HabitPlan!]
     login(email: String!, password: String!): AuthData!
     logout(userId: ID!, token: String!): Message!
-    pullAllPlans(userId: ID!): [HabitPlan!]
+    pullAllPlans: [HabitPlan!]
     searchPlan(keyword: String!): [HabitPlan!]
 }
 

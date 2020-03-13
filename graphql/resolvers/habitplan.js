@@ -1,6 +1,6 @@
 const HabitPlan = require('../../models/habitplan');
 const User = require('../../models/user');
-const { transformHabitPlan } = require('./merge');
+const { transformHabitPlan, habitplans } = require('./merge');
 
 module.exports = {
     habitPlan: async () => {
@@ -42,9 +42,11 @@ module.exports = {
             throw err;
         }
     },
-    pullAllPlans: async (args) => {
+    pullAllPlans: async (args, req) => {
+        if(!req.isAuth)
+            return new Error("Unauthorized!");
         try{
-            const user = await User.findById(args.userId);
+            const user = await User.findById(req.userId);
             if(!user){
                 return new Error('User does not exist');
             }
@@ -88,13 +90,13 @@ module.exports = {
                     {
                         habitName: { 
                             $regex: keyword,
-                            $options: 'i' 
+                            $options: 'si' 
                         }
                     },
                     {
                         habitType: {
                             $regex: keyword,
-                            $options: 'i'
+                            $options: 'si'
                         }
                     }
                 ]
