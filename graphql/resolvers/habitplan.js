@@ -3,7 +3,7 @@ const User = require('../../models/user');
 const { transformHabitPlan } = require('./merge');
 
 module.exports = {
-    HabitPlan: async () => {
+    habitPlan: async () => {
         try{
             const habitplans = await HabitPlan.find();
             return habitplans.map(habitplan => {
@@ -40,6 +40,70 @@ module.exports = {
             return createdHabitPlan;
         }catch(err){
             throw err;
+        }
+    },
+    pullAllPlans: async (args) => {
+        try{
+            const user = await User.findById(args.userId);
+            if(!user){
+                return new Error('User does not exist');
+            }
+            const habitPlanResult = await habitplans(user.createdHabits);
+            return habitPlanResult;
+        }catch(err){
+            if(err.name == "CastError")
+                return new Error("Invalid user id");
+            return err;
+        }
+    },
+    setPublish: async (args, req) =>{
+        if(!req.isAuth)
+            return { message: "ERROR: Unauthorized!" };
+        try{
+            const habitplan = await HabitPlan.findById(args.plan_id);
+            if(habitplan.creator != req.userId)
+                return { message: "ERROR: Not plan creator" };
+            habitplan.isPublished = ((args.isPublish)?args.isPublish:false);
+            if (await habitplan.save())
+                return { message: "SUCC" };
+            else
+                return { message: "ERROR"};
+        }catch(err){
+            return err;
+        }
+    },
+    pushAllPlan: async ()=> {
+        return { message: "no porgress xP"};
+    },
+    searchPlan: async (args) => {
+        //if(!req.isAuth)
+        //    return new Error("Unauthorized!");
+        if(!args.keyword)
+            args.keyword = '';
+        const keyword = args.keyword.trim();
+        try{
+            const habitplans = await HabitPlan.find({
+                isPublished: true,
+                $or: [
+                    {
+                        habitName: { 
+                            $regex: keyword,
+                            $options: 'i' 
+                        }
+                    },
+                    {
+                        habitType: {
+                            $regex: keyword,
+                            $options: 'i'
+                        }
+                    }
+                ]
+            });
+            return habitplans.map(habitplan => {
+                return transformHabitPlan(habitplan);
+            });
+        }catch(err){
+            return err;
         }
     },
     test: async (args, req) => {

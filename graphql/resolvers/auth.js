@@ -51,27 +51,32 @@ module.exports = {
             return err;
         }
     },
-    logout: async (args) => {
+    logout: async (args, req) => {
         try{
             const user = await User.findById(args.userId);
             if(!user){
                 throw new Error("User does not exist");
+                //return { message: "ERROR: User does not exist" };
             }
             const decodedToken = await jwt.verify(args.token, "secretKey");
             if(!decodedToken){
                 throw new Error('Token decode error');
+                //return { message: 'ERROR: Token decode error' };
             }
             if(decodedToken.userId != args.userId){
                 throw new Error('Wrong token or user');
+                //return { message: 'ERROR: Wrong token or user' };
             }
             user.sessionToken = null;
             const result = await user.save();
-            return { msg: "succ" };
+            return { message: "SUCC" };
         }catch(err){
             if(err.name == "CastError")
                 return new Error("Invalid user id");
+                //return { message: 'ERROR: Invalid user id' };
             if(err.name == "JsonWebTokenError")
                 return new Error("Invalid token");
+                //return { message: 'Invalid token' };
             return err;
         }
     }

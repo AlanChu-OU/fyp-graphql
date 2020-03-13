@@ -79,15 +79,16 @@ type AuthData {
 }
 
 type Message {
-    msg: String!
+    message: String!
 }
 
 type RootQuery {
     test: String
-    HabitPlan: [HabitPlan!]
+    habitPlan: [HabitPlan!]
     login(email: String!, password: String!): AuthData!
     logout(userId: ID!, token: String!): Message!
     pullAllPlans(userId: ID!): [HabitPlan!]
+    searchPlan(keyword: String!): [HabitPlan!]
 }
 
 type RootMutation {
@@ -95,6 +96,8 @@ type RootMutation {
     createHabitPlan(planInput: PlanInput): HabitPlan
     createItem(itemInput: ItemInput): PlanItem
     createRecord(recordInput: RecordInput): PlanRecord
+    setPublish(plan_id: ID!, isPublish: Boolean!): Message!
+    pushAllPlan: Message!
 }
 
 schema {
