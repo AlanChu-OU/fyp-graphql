@@ -102,3 +102,100 @@ const transformPlanRecord = planrecord => {
     }
 };
 exports.transformPlanRecord = transformPlanRecord;
+
+
+
+const pushItems = async (planId, itemList = []) => {
+    let plan;
+    let createdItemList = [];
+    try{
+        plan = await HabitPlan.findById(planId);
+        if(!plan){
+            throw new Error('Plan item not exist');
+        }
+    }catch(err){
+        return err;
+    }
+
+    for(var item of itemList){
+        const newItem = new PlanItem({
+            habitPlan: plan.id,
+            itemName: item.itemName,
+            itemType: item.itemType,
+            itemGoal: ((item.itemGoal)?item.itemGoal:null),
+            createdRecords: []
+        });
+        let createdItem;
+        try{
+            let result = await newItem.save();
+            //createdItem = transformPlanItem(result);
+            ////
+            const newRecords = await pushRecords(result.id, item.Records);
+            ////
+            result = await PlanItem.findById(result._id);
+            createdItem = transformPlanItem(result);
+            createdItem.newRecords = newRecords;
+            createdItem.localID = item.localID;
+            //save to plan
+            plan.createdItems.push(newItem);
+            await plan.save();
+
+            createdItemList.push(createdItem);
+        }catch(err){
+            return err;
+        }
+    }
+    /*
+    try{
+        
+    }catch(err){
+        return err;
+    }
+    */
+    return createdItemList;
+}
+exports.pushItems = pushItems;
+
+const pushRecords = async (itemId, recordList=[]) => {
+    let item;
+    let createdRecordList = [];
+    try{
+        item = await PlanItem.findById(itemId);
+        if(!item){
+            throw new Error('Plan item not exist');
+        }
+    }catch(err){
+        return err;
+    }
+    for(var record of recordList){
+        const newRecord = new PlanRecord({
+            planItem: item.id,
+            recordDate: record.recordDate,
+            progress: ((record.progress)?record.progress:null),
+            isDone: record.isDone
+        });
+        let createdRecord;
+        try{
+            let result = await newRecord.save();
+            createdRecord = transformPlanRecord(result);
+
+            createdRecord.localID = record.localID;
+
+            item.createdRecords.push(newRecord);
+            await item.save();
+
+            createdRecordList.push(createdRecord);
+        }catch(err){
+            return err;
+        }
+    }
+    /*
+    try{
+        
+    }catch(err){
+        return err;
+    }
+    */
+    return createdRecordList;
+}
+exports.pushRecords = pushRecords;

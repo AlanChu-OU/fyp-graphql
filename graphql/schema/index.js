@@ -23,6 +23,8 @@ type HabitPlan {
     creator: User!
     isActive: Boolean!
     createdItems: [PlanItem!]
+    localID: Int
+    newItems: [PlanItem!]
 }
 
 type PlanItem {
@@ -32,6 +34,8 @@ type PlanItem {
     itemType: String!
     itemGoal: Float
     createdRecords: [PlanRecord!]
+    localID: Int
+    newRecords: [PlanRecord!]
 }
 
 type PlanRecord {
@@ -40,6 +44,7 @@ type PlanRecord {
     recordDate: String!
     progress: Float
     isDone: Boolean!
+    localID: Int
 }
 
 input UserInput {
@@ -57,6 +62,7 @@ input PlanInput {
     startDate: String!
     endDate: String
     creator: ID!
+    localID: Int
 }
 
 input ItemInput {
@@ -71,6 +77,30 @@ input RecordInput {
     recordDate: String!
     progress: Float
     isDone: Boolean!
+}
+
+input PlansInput {
+    habitName: String!
+    habitType: String!
+    startDate: String!
+    endDate: String
+    localID: Int
+    Items: [ItemsInput!]
+}
+
+input ItemsInput {
+    itemName: String!
+    itemType: String!
+    itemGoal: Float
+    localID: Int
+    Records: [RecordsInput!]
+}
+
+input RecordsInput {
+    recordDate: String!
+    progress: Float
+    isDone: Boolean!
+    localID: Int
 }
 
 type AuthData {
@@ -97,7 +127,7 @@ type RootMutation {
     createItem(itemInput: ItemInput): PlanItem
     createRecord(recordInput: RecordInput): PlanRecord
     setPublish(plan_id: ID!, isPublish: Boolean!): Message!
-    pushAllPlan: Message!
+    pushPlans(creator: ID!, newPlans: [PlansInput!]!): [HabitPlan!]!
 }
 
 schema {

@@ -1,6 +1,6 @@
 const HabitPlan = require('../../models/habitplan');
 const User = require('../../models/user');
-const { transformHabitPlan, habitplans } = require('./merge');
+const { transformHabitPlan, habitplans, pushItems } = require('./merge');
 
 module.exports = {
     habitPlan: async () => {
@@ -13,7 +13,7 @@ module.exports = {
             throw err;
         }
     },
-    createHabitPlan: async (args) => {
+    createHabitPlan: async (args, req) => {
         const habitplan = new HabitPlan({
             habitName: args.planInput.habitName,
             habitType: args.planInput.habitType,
@@ -21,7 +21,7 @@ module.exports = {
             endDate: ((args.planInput.endDate)? new Date(args.planInput.endDate) : null),
             isPublished: false, //default false
             creator: args.planInput.creator,
-            isActive: false,    //default false
+            isActive: true,    //default true
             createdItems: []
         });
         let createdHabitPlan;
@@ -74,7 +74,61 @@ module.exports = {
             return err;
         }
     },
-    pushAllPlan: async ()=> {
+    pushPlans: async (args, req)=> {
+        //if(!req.isAuth)
+        //    return new Error("Unauthorized!");
+
+        let creator;
+        ////////////////////////////////////
+        try{
+            creator = await User.findById(args.creator);//is-auth
+        }catch(err){
+            if(err.name == "CastError")
+                return new Error("Invalid user id");
+            return err;
+        }
+        ////////////////////////////////////
+
+        const planlist = args.newPlans;
+        const resultList = [];
+        
+        for(var plan of planlist){
+            //create plans
+            const habitplan = new HabitPlan({
+                habitName: plan.habitName,
+                habitType: plan.habitType,
+                startDate: new Date(plan.startDate),
+                endDate: ((plan.endDate)? new Date(plan.endDate) : null),
+                isPublished: false, //default false
+                creator: args.creator,
+                isActive: true,     //default true
+                createdItems: []
+            });
+
+            let createdHabitPlan;
+            try{
+                //save plan
+                let result = await habitplan.save();
+                //createdHabitPlan = transformHabitPlan(result);
+                //save item
+                const newItems = await pushItems(result.id, plan.Items);
+
+                result = await HabitPlan.findById(result.id);
+                createdHabitPlan = transformHabitPlan(result);
+                createdHabitPlan.localID = plan.localID;
+                createdHabitPlan.newItems = newItems;
+                //save to creator
+                creator.createdHabits.push(habitplan);
+                await creator.save();
+
+                createdHabitPlan.localID = plan.localID;
+
+                resultList.push(createdHabitPlan);
+            }catch(err){
+                return err;
+            }
+        }
+        return resultList;
         return { message: "no porgress xP"};
     },
     searchPlan: async (args) => {
