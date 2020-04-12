@@ -134,7 +134,7 @@ const pushItems = async (planId, itemList = []) => {
             ////
             result = await PlanItem.findById(result._id);
             createdItem = transformPlanItem(result);
-            createdItem.newRecords = newRecords;
+            createdItem.newRecords = ((newRecords?newRecords:[]));
             createdItem.localID = item.localID;
             //save to plan
             plan.createdItems.push(newItem);

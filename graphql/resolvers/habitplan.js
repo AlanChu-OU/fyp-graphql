@@ -116,7 +116,7 @@ module.exports = {
                 result = await HabitPlan.findById(result.id);
                 createdHabitPlan = transformHabitPlan(result);
                 createdHabitPlan.localID = plan.localID;
-                createdHabitPlan.newItems = newItems;
+                createdHabitPlan.newItems = ((newItems)?newItems:[]);
                 //save to creator
                 creator.createdHabits.push(habitplan);
                 await creator.save();
