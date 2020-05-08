@@ -128,6 +128,8 @@ type RootMutation {
     createRecord(recordInput: RecordInput): PlanRecord
     setPublish(plan_id: ID!, isPublish: Boolean!): Message!
     pushPlans(creator: ID!, newPlans: [PlansInput!]!): [HabitPlan!]!
+    pushItems(creator: ID!, plan_id: ID!, newItems: [ItemsInput!]!): [PlanItem!]!
+    pushRecords(creator: ID!, item_id: ID!, newRecords: [RecordsInput!]!): [PlanRecord!]!
 }
 
 schema {

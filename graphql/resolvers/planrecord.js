@@ -1,6 +1,6 @@
 const PlanRecord = require('../../models/planrecord');
 const PlanItem = require('../../models/planitem');
-const { transformPlanRecord } = require('./merge');
+const { transformPlanRecord, pushRecords } = require('./merge');
 
 module.exports = {
     createRecord: async (args) => {
@@ -27,5 +27,20 @@ module.exports = {
         }catch(err){
             throw err;
         }
+    },
+    pushRecords: async (args, req) => {
+        //if(!req.isAuth)
+        //    return new Error("Unauthorized!");
+
+        try{
+            planitem = await PlanItem.findById(args.item_id);
+        }catch(err){
+            return err;
+        }
+
+        const recordList = args.newRecords;
+        const resultList = await pushRecords(args.item_id, recordList);
+
+        return resultList;
     }
 }

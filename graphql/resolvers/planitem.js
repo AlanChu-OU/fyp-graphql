@@ -1,6 +1,6 @@
 const PlanItem = require('../../models/planitem');
 const HabitPlan = require('../../models/habitplan');
-const { transformPlanItem } = require('./merge');
+const { transformPlanItem, pushItems } = require('./merge');
 
 module.exports = {
     createItem: async (args) => {
@@ -28,5 +28,20 @@ module.exports = {
         }catch(err){
             throw err;
         }
+    },
+    pushItems: async (args, req) => {
+        //if(!req.isAuth)
+        //    return new Error("Unauthorized!");
+
+        try{
+            habitplan = await HabitPlan.findById(args.plan_id);
+        }catch(err){
+            return err;
+        }
+
+        const itemList = args.newItems;
+        const resultList = await pushItems(args.plan_id, itemList);
+
+        return resultList;
     }
 };
