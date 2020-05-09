@@ -130,6 +130,7 @@ type RootMutation {
     pushPlans(creator: ID!, newPlans: [PlansInput!]!): [HabitPlan!]!
     pushItems(creator: ID!, plan_id: ID!, newItems: [ItemsInput!]!): [PlanItem!]!
     pushRecords(creator: ID!, item_id: ID!, newRecords: [RecordsInput!]!): [PlanRecord!]!
+    deletePlan(creator: ID!, plan_id: ID!): Message!
 }
 
 schema {
