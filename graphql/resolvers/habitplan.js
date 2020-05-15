@@ -143,13 +143,13 @@ module.exports = {
                 $or: [
                     {
                         habitName: { 
-                            $regex: keyword,
+                            $regex: keyword,        //
                             $options: 'si' 
                         }
                     },
                     {
                         habitType: {
-                            $regex: keyword,
+                            $regex: keyword,        //
                             $options: 'si'
                         }
                     }
@@ -161,11 +161,5 @@ module.exports = {
         }catch(err){
             return err;
         }
-    },
-    test: async (args, req) => {
-        if(req.isAuth)
-            return req.get('Authorization');
-        else
-            return "fail";
     }
 };
