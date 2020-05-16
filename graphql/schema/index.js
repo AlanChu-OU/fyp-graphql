@@ -134,6 +134,7 @@ input RecordsInput {
 }
 
 type AuthData {
+    userName: String!
     userId: ID!
     token: String!
 }

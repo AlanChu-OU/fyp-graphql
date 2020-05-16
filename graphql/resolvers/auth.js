@@ -46,7 +46,7 @@ module.exports = {
             const token = jwt.sign({userId: user.id, email: user.email}, 'secretKey', {  });//expiresIn: "100 days"
             user.sessionToken = token;
             const result = await user.save();
-            return {userId: user.id, token: token };
+            return { userName: user.userName, userId: user.id, token: token };
         }catch(err){
             return err;
         }
