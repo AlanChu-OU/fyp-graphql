@@ -7,7 +7,13 @@ const coachSchema = new Schema({
     {
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }
+    },
+    createdCoachPlan: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'CoachPlan'
+        }
+    ]
 });
 
 module.exports = mongoose.model('Coach', coachSchema);

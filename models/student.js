@@ -6,7 +6,7 @@ const studentSchema = new Schema({
     coachId: 
     {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'Coach'
     },
     studentId:
     {

@@ -47,6 +47,36 @@ type PlanRecord {
     localID: Int
 }
 
+type Coach {
+    _id: ID!
+    userId: User!    
+}
+
+type Student {
+    _id: ID!
+    studentId: User!
+    coachId: Coach!
+}
+
+type CoachPlan {
+    _id: ID!
+    habitName: String!
+    habitType: String!
+    startDate: String!
+    endDate: String
+    coachId: Coach!
+    studentId: Student!
+    createdItems: [CoachItem!]
+}
+
+type CoachItem {
+    _id: ID!
+    habitPlan: CoachPlan!
+    itemName: String!
+    itemType: String!
+    itemGoal: Float
+}
+
 input UserInput {
     email: String!
     password: String!
