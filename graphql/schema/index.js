@@ -49,13 +49,13 @@ type PlanRecord {
 
 type Coach {
     _id: ID!
-    userId: User!    
+    user: User!    
 }
 
 type Student {
     _id: ID!
-    studentId: User!
-    coachId: Coach!
+    user: User!
+    coach: Coach!
 }
 
 type CoachPlan {
@@ -64,14 +64,14 @@ type CoachPlan {
     habitType: String!
     startDate: String!
     endDate: String
-    coachId: Coach!
-    studentId: Student!
+    coach: Coach!
+    student: Student!
     createdItems: [CoachItem!]
 }
 
 type CoachItem {
     _id: ID!
-    habitPlan: CoachPlan!
+    coachPlan: CoachPlan!
     itemName: String!
     itemType: String!
     itemGoal: Float
