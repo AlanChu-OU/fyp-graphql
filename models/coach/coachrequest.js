@@ -3,15 +3,15 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const coachrequestSchema = new Schema({
-    coachId: 
+    coach: 
     {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'Coach'
     },
     userId:
     {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'Student'
     },
     message:{
         type: String
