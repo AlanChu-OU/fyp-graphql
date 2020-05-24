@@ -167,7 +167,8 @@ type RootMutation {
     pushPlans(creator: ID!, newPlans: [PlansInput!]!): [HabitPlan!]!
     pushItems(creator: ID!, plan_id: ID!, newItems: [ItemsInput!]!): [PlanItem!]!
     pushRecords(creator: ID!, item_id: ID!, newRecords: [RecordsInput!]!): [PlanRecord!]!
-    BeCoach(userId: ID!): Message!
+    beCoach(userId: ID!): Message!
+    findCoaches: [Coach!]!
 }
 
 schema {

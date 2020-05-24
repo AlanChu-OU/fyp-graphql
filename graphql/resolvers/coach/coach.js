@@ -2,7 +2,7 @@ const Coach = require('../../../models/coach/coach');
 const User = require('../../../models/user');
 
 module.exports = {
-    BeCoach: async (args, req) => {
+    beCoach: async (args, req) => {
         try{
             const user = await User.findById(args.userId);
             if(!user){
@@ -19,12 +19,25 @@ module.exports = {
                 user: user
             });
             const result = await newCoach.save();
-
-            return { message: "SUCC"}
+            if(result){
+                return { message: "SUCC"}    
+            }else{
+                return { message: "ERROR"}
+            }
+            
         }catch(err){
             if(err.name == "CastError")
                 return new Error("Invalid id");
                 //return { message: 'ERROR: Invalid user id' };
+            return err;
+        }
+    },
+    findCoaches: async (args, req)=>{
+        //const result;
+        try{
+            const coaches = await Coach.find();
+            return coaches;
+        }catch(err){
             return err;
         }
     }
