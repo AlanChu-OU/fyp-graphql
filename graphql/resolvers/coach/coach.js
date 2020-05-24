@@ -10,7 +10,7 @@ module.exports = {
                 //return { message: "ERROR: User does not exist" };
             }
 
-            var coach = await Coach.find({ userId: args.userId })
+            var coach = await Coach.find({ user: args.userId })
             if(coach.length > 0){
                 throw new Error("Already a coach");
             }
