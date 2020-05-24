@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const coachitemSchema = new Schema({
-    habitPlan: {
+    coachPlan: {
         type: Schema.Types.ObjectId,
         ref: 'CoachPlan'
     },

@@ -8,10 +8,10 @@ const coachrequestSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Coach'
     },
-    userId:
+    user:
     {
         type: Schema.Types.ObjectId,
-        ref: 'Student'
+        ref: 'User'
     },
     message:{
         type: String

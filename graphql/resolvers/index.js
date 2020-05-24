@@ -3,13 +3,15 @@ const habitplanResolver = require('./habitplan');
 const planitemResolver = require('./planitem');
 const planrecordResolver = require('./planrecord');
 const userResolver = require('./user');
+const coachResolver = require('./coach/coach');
 
 const rootResolver = {
     ...authResolver,
     ...habitplanResolver,
     ...planitemResolver,
     ...planrecordResolver,
-    ...userResolver
+    ...userResolver,
+    ...coachResolver
 };
 
 module.exports = rootResolver;

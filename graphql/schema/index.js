@@ -77,6 +77,12 @@ type CoachItem {
     itemGoal: Float
 }
 
+type CoachRequest {
+    _id: ID!
+    coach: Coach!
+    user: User!
+}
+
 input UserInput {
     email: String!
     password: String!
@@ -161,7 +167,7 @@ type RootMutation {
     pushPlans(creator: ID!, newPlans: [PlansInput!]!): [HabitPlan!]!
     pushItems(creator: ID!, plan_id: ID!, newItems: [ItemsInput!]!): [PlanItem!]!
     pushRecords(creator: ID!, item_id: ID!, newRecords: [RecordsInput!]!): [PlanRecord!]!
-    deletePlan(creator: ID!, plan_id: ID!): Message!
+    BeCoach(userId: ID!): Message!
 }
 
 schema {
