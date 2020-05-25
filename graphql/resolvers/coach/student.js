@@ -18,6 +18,11 @@ module.exports = {
             }
 
             const student = await Student.find({ user: args.userId });
+            for(s in student){
+                if(s._doc.Coach == args.id){
+                    throw new Error("Student of the coach already");
+                }
+            }
 
             const newStudent = new Student({
                 user: user,
