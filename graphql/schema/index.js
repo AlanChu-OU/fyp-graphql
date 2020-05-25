@@ -156,6 +156,7 @@ type RootQuery {
     logout(userId: ID!, token: String!): Message!
     pullAllPlans: [HabitPlan!]
     searchPlan(keyword: String!): [HabitPlan!]
+    findCoaches: [Coach!]!
 }
 
 type RootMutation {
@@ -168,7 +169,7 @@ type RootMutation {
     pushItems(creator: ID!, plan_id: ID!, newItems: [ItemsInput!]!): [PlanItem!]!
     pushRecords(creator: ID!, item_id: ID!, newRecords: [RecordsInput!]!): [PlanRecord!]!
     beCoach(userId: ID!): Message!
-    findCoaches: [Coach!]!
+    
 }
 
 schema {

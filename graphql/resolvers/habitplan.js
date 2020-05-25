@@ -54,8 +54,8 @@ module.exports = {
             return habitPlanResult;
         }catch(err){
             if(err.name == "CastError")
-                return new Error("Invalid user id");
-            return err;
+                throw new Error("Invalid user id");
+            throw err;
         }
     },
     setPublish: async (args, req) =>{
@@ -71,7 +71,7 @@ module.exports = {
             else
                 return { message: "ERROR"};
         }catch(err){
-            return err;
+            throw err;
         }
     },
     pushPlans: async (args, req)=> {
@@ -84,8 +84,8 @@ module.exports = {
             creator = await User.findById(args.creator);//is-auth
         }catch(err){
             if(err.name == "CastError")
-                return new Error("Invalid user id");
-            return err;
+                throw new Error("Invalid user id");
+            throw err;
         }
         ////////////////////////////////////
 
@@ -125,7 +125,7 @@ module.exports = {
 
                 resultList.push(createdHabitPlan);
             }catch(err){
-                return err;
+                throw err;
             }
         }
         return resultList;
@@ -159,7 +159,7 @@ module.exports = {
                 return transformHabitPlan(habitplan);
             });
         }catch(err){
-            return err;
+            throw err;
         }
     }
 };

@@ -17,6 +17,7 @@ const user = async userId => {
         throw err;
     }
 };
+exports.user = user;
 
 const habitplans = async (planIds) => {
     try{
@@ -165,7 +166,7 @@ const pushRecords = async (itemId, recordList=[]) => {
             throw new Error('Plan item not exist');
         }
     }catch(err){
-        return err;
+        throw err;
     }
     for(var record of recordList){
         const newRecord = new PlanRecord({
@@ -186,7 +187,7 @@ const pushRecords = async (itemId, recordList=[]) => {
 
             createdRecordList.push(createdRecord);
         }catch(err){
-            return err;
+            throw err;
         }
     }
     /*

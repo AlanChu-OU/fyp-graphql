@@ -1,5 +1,6 @@
 const Coach = require('../../../models/coach/coach');
 const User = require('../../../models/user');
+const { coach } = require('./merge');
 
 module.exports = {
     beCoach: async (args, req) => {
@@ -27,18 +28,20 @@ module.exports = {
             
         }catch(err){
             if(err.name == "CastError")
-                return new Error("Invalid id");
+                throw new Error("Invalid id");
                 //return { message: 'ERROR: Invalid user id' };
-            return err;
+            throw err;
         }
     },
     findCoaches: async (args, req)=>{
         //const result;
         try{
             const coaches = await Coach.find();
-            return coaches;
+            return coaches.map(aCoach => {
+                return coach(aCoach);
+            });
         }catch(err){
-            return err;
+            throw err;
         }
     }
 }
