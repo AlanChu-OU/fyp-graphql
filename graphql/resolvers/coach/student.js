@@ -17,9 +17,13 @@ module.exports = {
                 //return { message: "ERROR: Coach does not exist" };
             }
 
+            if(JSON.stringify(coach._doc.user) == JSON.stringify(user.id)){
+                throw new Error("Same user");
+            }
+
             const student = await Student.find({ user: args.userId });
-            for(s in student){
-                if(s._doc.Coach == args.id){
+            for(i=0; i<student.length; i++) {
+                if(student[i]._doc.coach == args.coachId){
                     throw new Error("Student of the coach already");
                 }
             }
@@ -30,6 +34,11 @@ module.exports = {
             });
 
             const result = await newStudent.save();
+            if(result){
+                return { message: "SUCC" };
+            }else{
+                return { message: "ERROR" };
+            }
         }catch(err){
             if(err.name == "CastError")
                 throw new Error("Invalid id");
