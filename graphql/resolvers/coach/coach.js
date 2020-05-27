@@ -1,5 +1,6 @@
 const Coach = require('../../../models/coach/coach');
 const User = require('../../../models/user');
+const Student = require('../../../models/coach/student');
 const { coach } = require('./merge');
 
 module.exports = {
@@ -40,6 +41,14 @@ module.exports = {
             return coaches.map(aCoach => {
                 return coach(aCoach);
             });
+        }catch(err){
+            throw err;
+        }
+    },
+    getStudents: async (args, req) => {
+        try{
+            const students = await Student.distinct("user", { coach: args.coachId });
+            return { message: "Testing" }
         }catch(err){
             throw err;
         }
