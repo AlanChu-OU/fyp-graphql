@@ -1,7 +1,7 @@
 const Student = require('../../../models/coach/student');
 const User = require('../../../models/user');
 const Coach = require('../../../models/coach/coach');
-const { transformStudent, transformCoach, getTransformCoach } = require('../coach/merge');
+const { getTransformCoach } = require('../coach/merge');
 
 module.exports = {
     addCoach: async (args, req)=>{
@@ -56,12 +56,9 @@ module.exports = {
             }
 
             const list = await Student.find({ user: args.userId });
-            list.map(student => {
+            return list.map(async student => {
                 return getTransformCoach(student._doc.coach);
             });
-
-            var i =1;
-            return list;
         }catch(err){
             if(err.name == "CastError")
                 throw new Error("Invalid id");
