@@ -158,6 +158,7 @@ type RootQuery {
     searchPlan(keyword: String!): [HabitPlan!]
     findCoaches: [Coach!]!
     getStudents(coachId: ID!): [Student!]!
+    getCoaches(userId: ID!): [Coach!]!
 }
 
 type RootMutation {

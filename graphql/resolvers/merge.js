@@ -17,7 +17,7 @@ const user = async userId => {
         throw err;
     }
 };
-exports.transformUser = user;
+exports.getTransformUser = user;
 
 const habitplans = async (planIds) => {
     try{
