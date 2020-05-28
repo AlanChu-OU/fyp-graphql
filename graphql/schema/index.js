@@ -157,7 +157,7 @@ type RootQuery {
     pullAllPlans: [HabitPlan!]
     searchPlan(keyword: String!): [HabitPlan!]
     findCoaches: [Coach!]!
-    getStudents(coachId: ID!): Message!
+    getStudents(coachId: ID!): [Student!]!
 }
 
 type RootMutation {

@@ -1,7 +1,8 @@
 const Coach = require('../../../models/coach/coach');
 const User = require('../../../models/user');
 const Student = require('../../../models/coach/student');
-const { coach } = require('./merge');
+const { transformCoach, transformStudent } = require('./merge');
+//const { transformUser } = require('../merge')
 
 module.exports = {
     beCoach: async (args, req) => {
@@ -35,11 +36,10 @@ module.exports = {
         }
     },
     findCoaches: async (args, req)=>{
-        //const result;
         try{
             const coaches = await Coach.find();
-            return coaches.map(aCoach => {
-                return coach(aCoach);
+            return coaches.map(coach => {
+                return transformCoach(coach);
             });
         }catch(err){
             throw err;
@@ -47,8 +47,10 @@ module.exports = {
     },
     getStudents: async (args, req) => {
         try{
-            const students = await Student.distinct("user", { coach: args.coachId });
-            return { message: "Testing" }
+            const students = await Student.find({ coach: args.coachId });
+            return students.map(student =>{
+                return transformStudent(student);
+            });
         }catch(err){
             throw err;
         }
