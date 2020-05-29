@@ -3,18 +3,15 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const coachrequestSchema = new Schema({
-    coach: 
-    {
-        type: Schema.Types.ObjectId,
-        ref: 'Coach'
-    },
     user:
     {
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    message:{
-        type: String
+    coach: 
+    {
+        type: Schema.Types.ObjectId,
+        ref: 'Coach'
     }
 });
 
