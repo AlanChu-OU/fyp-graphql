@@ -69,7 +69,7 @@ module.exports = {
     },
     createCoachingReq: async (args, req) => {
         try{
-            const user = User.findById(args.userId);
+            const user = await User.findById(args.userId);
             if(!user){
                 throw new Error("User does not exist");
                 //return { message: "ERROR: User does not exist" };
@@ -79,6 +79,10 @@ module.exports = {
             if(!coach){
                 throw new Error("Coach does not exist");
                 //return { message: "ERROR: Coach does not exist" };
+            }
+
+            if(JSON.stringify(coach._doc.user) == JSON.stringify(user.id)){
+                throw new Error("Same user");
             }
 
             const student = await Student.find({ user: args.userId });
