@@ -174,6 +174,7 @@ type RootMutation {
     beCoach(userId: ID!): Message!
     addCoach(userId: ID!, coachId: ID!): Message!
     createCoachingReq(userId: ID!, coachId: ID!): Message!
+    delCoachingReq(reqId: ID!): Message!
 }
 
 schema {

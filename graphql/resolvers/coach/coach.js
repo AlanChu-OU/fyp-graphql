@@ -82,5 +82,24 @@ module.exports = {
                 throw new Error("Invalid id");
             throw err;
         }
+    },
+    delCoachingReq: async (args, req) => {
+        try{
+            const request = await CoachingRequest.findById(args.reqId);
+            if(!request){
+                throw new Error("Request does not exist");
+            }
+
+            const result = await CoachingRequest.deleteOne({ _id: request.id });
+            if(result.deletedCount == 1){
+                return { message: "SUCC" };
+            }else{
+                return { message: "ERROR" };
+            }
+        }catch(err){
+            if(err.name == "CastError")
+                throw new Error("Invalid id");
+            throw err;
+        }
     }
 }
