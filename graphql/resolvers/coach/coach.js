@@ -1,7 +1,8 @@
 const Coach = require('../../../models/coach/coach');
 const User = require('../../../models/user');
 const Student = require('../../../models/coach/student');
-const { transformCoach, transformStudent } = require('./merge');
+const CoachingRequest = require('../../../models/coach/coachrequest');
+const { transformCoach, transformStudent, transformReq } = require('./merge');
 
 module.exports = {
     beCoach: async (args, req) => {
@@ -60,6 +61,25 @@ module.exports = {
             if(err.name == "CastError")
                 throw new Error("Invalid id");
                 //return { message: 'ERROR: Invalid user id' };
+            throw err;
+        }
+    },
+    getCoachingReq: async (args, req) => {
+        try{
+            const coach = await Coach.findById(args.coachId);
+            if(!coach){
+                throw new Error("Coach does not exist");
+            }
+
+            const coachReq = await CoachingRequest.find({ coach: args.coachId });
+
+            return coachReq.map(request => {
+                return transformReq(request);
+            });
+
+        }catch(err){
+            if(err.name == "CastError")
+                throw new Error("Invalid id");
             throw err;
         }
     }

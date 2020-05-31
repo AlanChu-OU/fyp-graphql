@@ -34,3 +34,13 @@ const transformStudent = async (student) => {
     }
 }
 exports.transformStudent = transformStudent;
+
+const transformReq = async (request) => {
+    return {
+        ...request._doc,
+        _id: request.id,
+        user: getTransformUser(request._doc.user),
+        coach: coach.bind(this, request._doc.coach)
+    }
+}
+exports.transformReq = transformReq;

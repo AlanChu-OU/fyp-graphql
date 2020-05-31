@@ -159,6 +159,7 @@ type RootQuery {
     findCoaches: [Coach!]!
     getStudents(coachId: ID!): [Student!]!
     getCoaches(userId: ID!): [Coach!]!
+    getCoachingReq(coachId: ID!): [CoachRequest!]!
 }
 
 type RootMutation {
