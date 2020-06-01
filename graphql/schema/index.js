@@ -83,6 +83,13 @@ type CoachRequest {
     user: User!
 }
 
+type PlanComment {
+    _id: ID!
+    user: User!
+    content: String!
+    recordDate: String!
+}
+
 input UserInput {
     email: String!
     password: String!
@@ -159,7 +166,7 @@ type RootQuery {
     getStudents(coachId: ID!): [Student!]!
     getCoaches(userId: ID!): [Coach!]!
     getCoachingReq(coachId: ID!): [CoachRequest!]!
-    
+    getComment(planId: ID!): [PlanComment!]!
 }
 
 type RootMutation {
@@ -175,6 +182,7 @@ type RootMutation {
     addCoach(userId: ID!, coachId: ID!): Message!
     createCoachingReq(userId: ID!, coachId: ID!): Message!
     delCoachingReq(reqId: ID!): Message!
+    commentPlan(planId: ID!, userId: ID!, createDate: String!, content: String!): Message!
 }
 
 schema {

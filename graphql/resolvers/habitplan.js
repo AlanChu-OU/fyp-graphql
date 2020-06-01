@@ -1,7 +1,8 @@
 const HabitPlan = require('../../models/habitplan');
 const User = require('../../models/user');
 const Comment = require('../../models/plancomment');
-const { transformHabitPlan, habitplans, pushItems } = require('./merge');
+const { getTransformUser, transformHabitPlan, habitplans, pushItems } = require('./merge');
+const { dateToString } = require('../../helpers/date')
 const sanitize = require('mongo-sanitize');
 
 module.exports = {
@@ -173,6 +174,10 @@ module.exports = {
     },
     commentPlan: async (args) => {
         try{
+            if(!args.content){
+                throw new Error("Empty content");
+            }
+
             const user = await User.findById(args.userId);
             if(!user){
                 throw new Error("User does not exist");                
@@ -187,7 +192,7 @@ module.exports = {
                 plan: plan,
                 user: user,
                 content: sanitize(args.content),
-                createDate: args.recordInput.recordDate
+                recordDate: args.createDate
             });
 
             const result = await comment.save();
@@ -198,7 +203,30 @@ module.exports = {
                 return { message: "ERROR" };
             }
 
-        }catch{
+        }catch(err){
+            if(err.name == "CastError")
+                throw new Error("Invalid id");
+            throw err;
+        }
+    },
+    getComment: async (args) => {
+        try{
+            const plan = await HabitPlan.findById(args.planId);
+            if(!plan){
+                throw new Error("Plan does not exist");                
+            }
+
+            const commemts = await Comment.find({ plan: plan });
+            return commemts.map(comment => {
+                return {
+                    ...comment._doc,
+                    _id: comment.id,
+                    user: getTransformUser(comment._doc.user),
+                    recordDate: dateToString(comment._doc.recordDate)
+                }
+            });
+
+        }catch(err){
             if(err.name == "CastError")
                 throw new Error("Invalid id");
             throw err;
