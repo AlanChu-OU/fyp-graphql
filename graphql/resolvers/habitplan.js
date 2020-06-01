@@ -1,6 +1,8 @@
 const HabitPlan = require('../../models/habitplan');
 const User = require('../../models/user');
+const Comment = require('../../models/plancomment');
 const { transformHabitPlan, habitplans, pushItems } = require('./merge');
+const sanitize = require('mongo-sanitize');
 
 module.exports = {
     habitPlan: async () => {
@@ -168,23 +170,38 @@ module.exports = {
         }catch(err){
             throw err;
         }
-    }
-    /*,
-    pullPlans: async (args, req) => {
+    },
+    commentPlan: async (args) => {
         try{
             const user = await User.findById(args.userId);
             if(!user){
-                return new Error('User does not exist');
+                throw new Error("User does not exist");                
             }
 
-            const habitplans = await HabitPlan.find({ creator: user });
-            return habitplans.map(habitplan => {
-                return transformHabitPlan(habitplan);
+            const plan = await HabitPlan.findById(args.planId);
+            if(!plan){
+                throw new Error("Plan does not exist");                
+            }
+
+            const comment = new Comment({
+                plan: plan,
+                user: user,
+                content: sanitize(args.content),
+                createDate: args.recordInput.recordDate
             });
-        }catch(err){
+
+            const result = await comment.save();
+
+            if(result){
+                return { message: "SUCC" };
+            }else{
+                return { message: "ERROR" };
+            }
+
+        }catch{
             if(err.name == "CastError")
                 throw new Error("Invalid id");
             throw err;
         }
-    }*/
+    }
 };
