@@ -10,7 +10,7 @@ type User {
     weight: Float
     gender: String
     sessionToken: String
-    createdHabits: [HabitPlan!]
+    createdHabits: [HabitPlan!]!
 }
 
 type HabitPlan {
@@ -22,7 +22,7 @@ type HabitPlan {
     isPublished: Boolean!
     creator: User!
     isActive: Boolean!
-    createdItems: [PlanItem!]
+    createdItems: [PlanItem!]!
     localID: Int
     newItems: [PlanItem!]
 }
@@ -33,7 +33,7 @@ type PlanItem {
     itemName: String!
     itemType: String!
     itemGoal: Float
-    createdRecords: [PlanRecord!]
+    createdRecords: [PlanRecord!]!
     localID: Int
     newRecords: [PlanRecord!]
 }
@@ -150,16 +150,16 @@ type Message {
 }
 
 type RootQuery {
-    test: String
     habitPlan: [HabitPlan!]
     login(email: String!, password: String!): AuthData!
     logout(userId: ID!, token: String!): Message!
-    pullAllPlans: [HabitPlan!]
-    searchPlan(keyword: String!): [HabitPlan!]
+    pullPlans(userId: ID!): [HabitPlan!]!
+    searchPlan(keyword: String!): [HabitPlan!]!
     findCoaches: [Coach!]!
     getStudents(coachId: ID!): [Student!]!
     getCoaches(userId: ID!): [Coach!]!
     getCoachingReq(coachId: ID!): [CoachRequest!]!
+    
 }
 
 type RootMutation {

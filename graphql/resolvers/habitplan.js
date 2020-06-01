@@ -42,19 +42,26 @@ module.exports = {
             throw err;
         }
     },
-    pullAllPlans: async (args, req) => {
-        if(!req.isAuth)
-            return new Error("Unauthorized!");
+    pullPlans: async (args, req) => {
+        //if(!req.isAuth)
+        //    return new Error("Unauthorized!");
         try{
-            const user = await User.findById(req.userId);
+            //const user = await User.findById(req.userId);
+            const user = await User.findById(args.userId);
             if(!user){
                 return new Error('User does not exist');
             }
             const habitPlanResult = await habitplans(user.createdHabits);
             return habitPlanResult;
+            /*
+            const habitplans = await HabitPlan.find({ creator: user });
+            return habitplans.map(habitplan => {
+                return transformHabitPlan(habitplan);
+            });
+            */
         }catch(err){
             if(err.name == "CastError")
-                throw new Error("Invalid user id");
+                throw new Error("Invalid id");
             throw err;
         }
     },
@@ -84,7 +91,7 @@ module.exports = {
             creator = await User.findById(args.creator);//is-auth
         }catch(err){
             if(err.name == "CastError")
-                throw new Error("Invalid user id");
+                throw new Error("Invalid id");
             throw err;
         }
         ////////////////////////////////////
@@ -162,4 +169,22 @@ module.exports = {
             throw err;
         }
     }
+    /*,
+    pullPlans: async (args, req) => {
+        try{
+            const user = await User.findById(args.userId);
+            if(!user){
+                return new Error('User does not exist');
+            }
+
+            const habitplans = await HabitPlan.find({ creator: user });
+            return habitplans.map(habitplan => {
+                return transformHabitPlan(habitplan);
+            });
+        }catch(err){
+            if(err.name == "CastError")
+                throw new Error("Invalid id");
+            throw err;
+        }
+    }*/
 };
