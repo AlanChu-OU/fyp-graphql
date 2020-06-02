@@ -27,6 +27,10 @@ const coachplanSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Student'
     },
+    status: {
+        type: String,
+        required: true
+    },
     createdItems: [
         {
             type: Schema.Types.ObjectId,

@@ -2,6 +2,8 @@ const Coach = require('../../../models/coach/coach');
 const User = require('../../../models/user');
 const Student = require('../../../models/coach/student');
 const CoachingRequest = require('../../../models/coach/coachrequest');
+const CoachPlan = require('../../../models/coach/coachplan');
+const CoachItem = require('../../../models/coach/coachItem');
 const { transformCoach, transformStudent, transformReq } = require('./merge');
 
 module.exports = {
@@ -96,6 +98,64 @@ module.exports = {
             }else{
                 return { message: "ERROR" };
             }
+        }catch(err){
+            if(err.name == "CastError")
+                throw new Error("Invalid id");
+            throw err;
+        }
+    },
+    assignPlan: async (args) => {
+        try{
+            const student = await Student.findById(args.studentId);
+            if(!student){
+                throw new Error("Student does not exist");
+            }
+
+            const coach = await Coach.findById(args.coachId);
+            if(!coach){
+                throw new Error("Coach does not exist");
+            }
+
+            if(JSON.stringify(student._doc.coach) != JSON.stringify(coach.id)){
+                throw new Error("Not coach of student");
+            }
+
+            const newPlan = new CoachPlan({
+                habitName: args.newPlan.habitName,
+                habitType: args.newPlan.habitType,
+                startDate: args.newPlan.startDate,
+                endDate: ((args.newPlan.endDate) ? args.newPlan.endDate : null),
+                coach: coach,
+                student: student,
+                status: "Pending", //Default Pending
+                createdItems: []
+            });
+
+            const assignedPlan = await newPlan.save();
+            if(!assignedPlan){
+                return { message: "ERROR: Plan save error" };
+            }
+
+            const newItems = args.newPlan.Items;
+            for(var item of newItems){
+                const newItem = new CoachItem({
+                    coachPlan: assignedPlan,
+                    itemName: item.itemName,
+                    itemType: item.itemType,
+                    itemGoal: ((item.itemGoal) ? item.itemGoal : null)
+                });
+
+                const assignedItem = await newItem.save();
+                if(!assignedItem){
+                    return { message: "ERROR: Item save error" };
+                }
+
+                await assignedPlan.createdItems.push(assignedItem);
+                await assignedPlan.save();
+            }
+
+            return { message: "SUCC" };
+
         }catch(err){
             if(err.name == "CastError")
                 throw new Error("Invalid id");

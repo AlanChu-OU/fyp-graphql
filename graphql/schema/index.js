@@ -183,6 +183,7 @@ type RootMutation {
     createCoachingReq(userId: ID!, coachId: ID!): Message!
     delCoachingReq(reqId: ID!): Message!
     commentPlan(planId: ID!, userId: ID!, createDate: String!, content: String!): Message!
+    assignPlan(coachId: ID!, studentId: ID!, newPlan: PlansInput!): Message!
 }
 
 schema {
