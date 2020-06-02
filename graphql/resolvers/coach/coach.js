@@ -161,5 +161,21 @@ module.exports = {
                 throw new Error("Invalid id");
             throw err;
         }
+    },
+    getAssigned: async (args) =>{
+        try{
+            const student = await Student.findById(args.studentId);
+            if(!student){
+                throw new Error("Student does not exist");
+            }
+
+            const plans = await CoachPlan.find({ student: student, status: "Pending" });
+            
+
+        }catch(err){
+            if(err.name == "CastError")
+                throw new Error("Invalid id");
+            throw err;
+        }
     }
 }
