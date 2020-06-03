@@ -66,6 +66,7 @@ type CoachPlan {
     endDate: String
     coach: Coach!
     student: Student!
+    status: String!
     createdItems: [CoachItem!]
 }
 
