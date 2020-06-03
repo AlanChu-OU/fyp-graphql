@@ -3,7 +3,7 @@ const User = require('../../../models/user');
 const Coach = require('../../../models/coach/coach');
 const CoachingRequest = require('../../../models/coach/coachrequest');
 const CoachPlan = require('../../../models/coach/coachplan');
-const { getTransformCoach, transformStudent } = require('../coach/merge');
+const { getTransformCoach, transformStudent, transformCoachPlan } = require('../coach/merge');
 
 module.exports = {
     addCoach: async (args, req)=>{
