@@ -136,7 +136,7 @@ module.exports = {
                 return { message: "ERROR: Plan save error" };
             }
 
-            const newItems = args.newPlan.Items;
+            const newItems = ((args.newPlan.Items)? args.newPlan.Items: []);
             for(var item of newItems){
                 const newItem = new CoachItem({
                     coachPlan: assignedPlan,
@@ -164,13 +164,23 @@ module.exports = {
     },
     getAssigned: async (args) =>{
         try{
-            const student = await Student.findById(args.studentId);
-            if(!student){
-                throw new Error("Student does not exist");
+            const user = await User.findById(args.userId);
+            if(!user){
+                throw new Error("User does not exist");
+                //return { message: "ERROR: User does not exist" };
             }
 
-            const plans = await CoachPlan.find({ student: student, status: "Pending" });
-            return plans.map(plan => {
+            const students = await Student.find({ user: user });
+            let result = [];
+            for(var student of students){
+                const plans = await CoachPlan.find({ student: student, status: "Pending" });
+                for(var plan of plans){
+                    result.push(plan);
+                }
+            }
+
+            //const plans = await CoachPlan.find({ student: student, status: "Pending" });
+            return result.map(plan => {
                 return transformCoachPlan(plan);
             });
 
