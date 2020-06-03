@@ -161,33 +161,5 @@ module.exports = {
                 throw new Error("Invalid id");
             throw err;
         }
-    },
-    getAssigned: async (args) =>{
-        try{
-            const user = await User.findById(args.userId);
-            if(!user){
-                throw new Error("User does not exist");
-                //return { message: "ERROR: User does not exist" };
-            }
-
-            const students = await Student.find({ user: user });
-            let result = [];
-            for(var student of students){
-                const plans = await CoachPlan.find({ student: student, status: "Pending" });
-                for(var plan of plans){
-                    result.push(plan);
-                }
-            }
-
-            //const plans = await CoachPlan.find({ student: student, status: "Pending" });
-            return result.map(plan => {
-                return transformCoachPlan(plan);
-            });
-
-        }catch(err){
-            if(err.name == "CastError")
-                throw new Error("Invalid id");
-            throw err;
-        }
     }
 }
