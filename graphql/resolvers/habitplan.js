@@ -69,18 +69,24 @@ module.exports = {
         }
     },
     setPublish: async (args, req) =>{
-        if(!req.isAuth)
-            return { message: "ERROR: Unauthorized!" };
+        //if(!req.isAuth)
+        //    return { message: "ERROR: Unauthorized!" };
         try{
             const habitplan = await HabitPlan.findById(args.plan_id);
-            if(habitplan.creator != req.userId)
-                return { message: "ERROR: Not plan creator" };
-            habitplan.isPublished = ((args.isPublish)?args.isPublish:false);
-            if (await habitplan.save())
+            if(!habitplan){
+                throw new Error("Plan does not exist");
+            }
+            //if(habitplan.creator != req.userId)
+            //    return { message: "ERROR: Not plan creator" };
+            //habitplan.isPublished = ((args.isPublish)?args.isPublish:false);
+            const result = await HabitPlan.updateOne({_id: habitplan}, {$set: { isPublished: args.isPublish }})
+            if (result.ok == 1)
                 return { message: "SUCC" };
             else
                 return { message: "ERROR"};
         }catch(err){
+            if(err.name == "CastError")
+                throw new Error("Invalid id")
             throw err;
         }
     },
