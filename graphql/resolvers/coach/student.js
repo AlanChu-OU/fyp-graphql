@@ -174,11 +174,6 @@ module.exports = {
     },
     replyCoachPlan: async (args) => {
         try{
-            const student = await Student.findById(args.studentId);
-            if(!student){
-                throw new Error("Student does not exist");
-            }
-
             const coachPlan = await CoachPlan.findById(args.coachPlanId);
             if(!coachPlan){
                 throw new Error("Plan does not exist");
