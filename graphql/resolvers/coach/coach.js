@@ -4,7 +4,7 @@ const Student = require('../../../models/coach/student');
 const CoachingRequest = require('../../../models/coach/coachrequest');
 const CoachPlan = require('../../../models/coach/coachplan');
 const CoachItem = require('../../../models/coach/coachItem');
-const { transformCoach, transformStudent, transformReq } = require('./merge');
+const { transformCoach, transformStudent, transformReq, transformCoachPlan } = require('./merge');
 
 module.exports = {
     beCoach: async (args, req) => {
@@ -170,7 +170,9 @@ module.exports = {
             }
 
             const plans = await CoachPlan.find({ student: student, status: "Pending" });
-            
+            return plans.map(plan => {
+                return transformCoachPlan(plan);
+            });
 
         }catch(err){
             if(err.name == "CastError")
