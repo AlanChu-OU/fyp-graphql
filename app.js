@@ -34,7 +34,7 @@ app.use(
 
 //mongodb+srv://sharebits:sharebits@cluster0-ebi7i.mongodb.net/de?retryWrites=true&w=majority
 
-mongoose.connect(`mongodb+srv://sharebits:sharebits@cluster0-ebi7i.mongodb.net/sharebitsdb?retryWrites=true&w=majority`
+mongoose.connect(`mongodb+srv://sharebits:sharebits@cluster0-ebi7i.mongodb.net/sharebitsdb?retryWrites=true&w=majority`,  { useNewUrlParser: true }
 ).then(() => {
     app.listen(process.env.PORT || 8099); //|| 8099
 }).catch(err => {
